@@ -17,7 +17,9 @@
     "envalid": "^8.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.13.3"
+    "mongoose": "^6.13.3",
+    "zod": "^3.23.8",
+    "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
