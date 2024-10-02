@@ -1,22 +1,17 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import { dbConnect } from './utils/db-connection/db.connect';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
-mongoose
-    .connect(process.env.MONGO_URI as string)
-    .then(() => {
-        console.log('Connected to MongoDB');
-    })
-    .catch(() => {
-        console.log('Failed to connect to MongoDB');
-    });
-
 const app = express();
+dbConnect();
+
+app.use(express.json());
 
 app.get('/', (req, res) => {
     return res.send('Hello World!');
 });
 
-app.listen(8000, () => console.log('Server running on port 8000'));
+app.listen(process.env.PORT, () => {
+    console.log(`Server started on port ${process.env.PORT}`);
+});
