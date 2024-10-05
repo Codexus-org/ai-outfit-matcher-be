@@ -3,6 +3,7 @@ import cookiParser from 'cookie-parser';
 import { dbConnect } from './utils/db-connection/db.connect';
 import dotenv from 'dotenv';
 import { userRouter } from './router/user.route';
+
 dotenv.config();
 
 const app = express();

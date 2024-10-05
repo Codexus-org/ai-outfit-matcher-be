@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import AuthService from "../services/auth.service";
 
 const AuthController = {
@@ -20,10 +20,11 @@ const AuthController = {
     handleUserLogin : async (req: Request, res: Response) => {
         try {
             const { email, password } = req.body;
+            
             const userLogin = await AuthService.userLogin(email, password);
-
-            const { accessToken, refreshToken } = userLogin as { accessToken: string; refreshToken: string; };
-
+            
+            const { accessToken, refreshToken } = userLogin as { accessToken: string, refreshToken: string };
+            
             return res
                     .cookie("accessToken", accessToken, { httpOnly: true })
                     .cookie("refreshToken", refreshToken, { httpOnly: true })
@@ -33,6 +34,22 @@ const AuthController = {
             if (error instanceof Error) {
                 return res.status(401).json({ message: error.message });
             }
+        }
+    },
+
+    handleLogout : async (req: Request, res: Response, next: NextFunction) => {
+        const { refreshToken } = req.cookies;
+
+        try {
+            await AuthService.userLogout(refreshToken);
+
+            return res
+                .clearCookie("accessToken")
+                .clearCookie("refreshToken")
+                .status(200)
+                .json({ message: "User logged out" });
+        } catch (error) {
+            next(error);
         }
     }
 }
