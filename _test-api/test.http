@@ -1,1 +1,11 @@
-GET http://localhost:8000/
+### Create User
+POST http://localhost:8000/outfitmatcher/api/v1/register
+Content-Type: application/json
+
+{
+    "firstName": "Mahaputra",
+    "lastName": "Ilham Awal",
+    "username": "putra988",
+    "email": "putra@gmail.com",
+    "password": "putra12345_"
+}
