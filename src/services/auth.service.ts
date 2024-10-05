@@ -1,5 +1,5 @@
 import { userLoginSchema, userValidationSchema } from "../utils/zod/zod"
-import { IResponseUserLogin, IResponseUserRegister, IUser, ServiceReturn } from "../types/user.entities";
+import { IResponseUserLogout,IResponseUserLogin, IResponseUserRegister, IUser, ServiceReturn } from "../types/user.entities";
 import UserService from "./user.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -77,12 +77,13 @@ const AuthService = {
         }
     },
 
-    userLogout: async (refreshToken: string) => {
-        // console.log(refreshToken)
+    userLogout: async (refreshToken: string) : Promise<ServiceReturn<IResponseUserLogout>> => {
         try {
             await AuthRepository.deleteAuth(refreshToken);
-        } catch (error) {
-            console.log(error);
+
+            return { error: null, data: { refreshToken } };
+        } catch {
+            return { error: new Error("Internal server error"), data: null };
         }
     }
 }

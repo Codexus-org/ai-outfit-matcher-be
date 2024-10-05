@@ -1,4 +1,3 @@
-import { get } from "mongoose";
 import { Auth } from "../models/auth.schema";
 
 const AuthRepository = {

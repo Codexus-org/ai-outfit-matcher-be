@@ -19,6 +19,24 @@ const UserRepository = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    updateUser: async (id: string, user: IUser) => {
+        try {
+            const updatedUser = await User.findByIdAndUpdate(id, user, { new: true });
+            return updatedUser;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    deleteUser: async (id: string) => {
+        try {
+            const deletedUser = await User.findByIdAndDelete(id);
+            return deletedUser;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
