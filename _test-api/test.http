@@ -9,3 +9,12 @@ Content-Type: application/json
     "email": "asep@gmail.com",
     "password": "asep12345_"
 }
+
+### Login User
+POST http://localhost:8000/outfitmatcher/api/v1/login
+Content-Type: application/json
+
+{
+    "email": "asep@gmail.com",
+    "password": "asep12345_"
+}

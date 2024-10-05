@@ -5,3 +5,4 @@ import AuthController from '../controllers/auth.controller';
 export const userRouter = express.Router();
 
 userRouter.post('/register', AuthController.handleUserRegister);
+userRouter.post('/login', AuthController.handleUserLogin);

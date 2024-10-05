@@ -8,4 +8,9 @@ const userValidationSchema = z.object({
     password: z.string().min(8, { message: "Password is required" }),
 });
 
-export { userValidationSchema }
+const userLoginSchema = z.object({
+    email: z.string().email({ message: "Email is required" }),
+    password: z.string().min(8, { message: "Password is required" }),
+})
+
+export { userValidationSchema, userLoginSchema }
