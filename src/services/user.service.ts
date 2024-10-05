@@ -10,6 +10,15 @@ const UserService = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    getUserByEmail: async (email: string) => {
+        try {
+            const user = await UserRepository.getUser(email);
+            return user;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
