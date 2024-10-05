@@ -1,52 +1,61 @@
 import { userLoginSchema, userValidationSchema } from "../utils/zod/zod"
-import { IUser } from "../types/user.entities";
+import { IResponseUserLogin, IResponseUserRegister, IUser, ServiceReturn } from "../types/user.entities";
 import UserService from "./user.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import AuthRepository from "../repositories/auth.repository";
 
 const AuthService = {
-    userRegister: async (user: IUser) => {
+    userRegister: async (user: IUser) : Promise <ServiceReturn<IResponseUserRegister>> => {
         try {
             const userValidated = userValidationSchema.safeParse(user);
 
             if (!userValidated.success) {
-                return userValidated.error;
+                return { error: userValidated.error, data: null };
             }
             
             const isUserRegistered = await UserService.getUserByEmail(user.email);
             if (isUserRegistered) {
-                return { message: "User already exists"};
+                return { error: new Error("User already registered"), data: null };
             }
 
             const hashPassword = await bcrypt.hash(user.password, 13);
             
             const newUser = await UserService.createUser({...user, password: hashPassword});
-            return newUser;
-        } catch (error) {
-            console.log(error);
+
+            const payload : IResponseUserRegister= {
+                userId: newUser?.id as string,
+                email: newUser?.email as string,
+                username: newUser?.username as string,
+                firstName: newUser?.firstName as string,
+                lastName: newUser?.lastName as string
+            };
+
+            return { error: null, data: payload };
+        } catch {
+            return { error: new Error("Internal server error"), data: null };
         }
     },
 
-    userLogin : async (email: string, password: string) => {
+    userLogin : async (email: string, password: string) : Promise <ServiceReturn<IResponseUserLogin>> => {
         try {
             const userValidated = userLoginSchema.safeParse({ email, password });
             
             if (!userValidated.success) {
-                return userValidated.error;
+                return { error: userValidated.error, data: null };
             }
 
             // check user by email
             const user = await UserService.getUserByEmail(email);
 
             if (!user) {
-                return { message: "invalid credentials" };
+                return { error: new Error("Invalid credentials"), data: null };
             }
 
             const isPasswordMatch = await bcrypt.compare(password, user.password as string);
 
             if (!isPasswordMatch) {
-                return { message: "invalid credentials" };
+                return { error: new Error("Invalid credentials"), data: null };
             }
 
             const payload = {
@@ -62,9 +71,9 @@ const AuthService = {
 
             await AuthRepository.createAuth(userId, refreshToken);
 
-            return { userId, accessToken, refreshToken };
-        } catch (error) {
-            console.log(error);
+            return { error: null, data: { userId, accessToken, refreshToken } };
+        } catch {
+            return { error: new Error("Internal server error"), data: null };
         }
     },
 

@@ -1,19 +1,26 @@
 import { NextFunction, Request, Response } from "express";
+import { ZodError } from "zod";
 import AuthService from "../services/auth.service";
+import ResponseHandler from "../utils/response-handler/response.handler";
 
 const AuthController = {
     handleUserRegister : async (req: Request, res: Response) => {
-        const { firstName, lastName, username, email, password } = req.body;
-        const newUser = await AuthService.userRegister({ firstName, lastName, username, email, password });
-
-        if (!newUser) {
-            return res.status(401).json({message: 'Failed create user'})
-        }
-
         try {
-            return res.status(201).json({ message: "User created", data: newUser });
+            const { firstName, lastName, username, email, password } = req.body;
+            const newUser = await AuthService.userRegister({ firstName, lastName, username, email, password });
+
+            if (newUser.error !== null) {
+                if (newUser.error instanceof ZodError) {
+                    return ResponseHandler(res, 400, "Invalid validation", newUser.error, null);
+                }
+                return ResponseHandler(res, 400, newUser.error.message, null, null);
+            }
+
+            return ResponseHandler(res, 200, "User created", null, newUser.data);
         } catch (error) {
-            console.log(error);
+            if (error instanceof Error) {
+                return ResponseHandler(res, 400, "Invalid validation", error, null);
+            }
         }
     },
 
@@ -23,16 +30,32 @@ const AuthController = {
             
             const userLogin = await AuthService.userLogin(email, password);
             
-            const { accessToken, refreshToken } = userLogin as { accessToken: string, refreshToken: string };
+            if (userLogin.error !== null) {
+                if (userLogin.error instanceof ZodError) {
+                    return ResponseHandler(res, 400, "Invalid validation", userLogin.error, null);
+                }
+                return ResponseHandler(res, 400, userLogin.error.message, null, null);
+            }
             
-            return res
-                    .cookie("accessToken", accessToken, { httpOnly: true })
-                    .cookie("refreshToken", refreshToken, { httpOnly: true })
-                    .status(200)
-                    .json({ message: "User logged in"});
+            return ResponseHandler(res, 200, "User logged in", null, userLogin.data, [
+                { 
+                    name: "accessToken",
+                    value: userLogin.data?.accessToken,
+                    options: {
+                        httpOnly: true
+                    }
+                },
+                {
+                    name: "refreshToken",
+                    value: userLogin.data?.refreshToken,
+                    options: {
+                        httpOnly: true
+                    }
+                }
+            ]);
         } catch (error) {
             if (error instanceof Error) {
-                return res.status(401).json({ message: error.message });
+                return ResponseHandler(res, 400, "Invalid validation", error, null);
             }
         }
     },
