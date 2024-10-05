@@ -21,3 +21,11 @@ Content-Type: application/json
 
 ### Logout User
 POST http://localhost:8000/outfitmatcher/api/v1/logout
+
+### Outfit
+POST http://localhost:8000/outfitmatcher/
+Content-Type: application/json
+
+{
+    "outfit": "generate image of a men's outfit suitable for going to campus in rainy weather"
+}
