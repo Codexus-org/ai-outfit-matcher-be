@@ -1,4 +1,4 @@
-import { userValidationSchema } from "../utils/zod/zod"
+import { userLoginSchema, userValidationSchema } from "../utils/zod/zod"
 import { IUser } from "../types/user.entities";
 import UserService from "./user.service";
 import bcrypt from "bcrypt";
@@ -30,7 +30,7 @@ const AuthService = {
 
     userLogin : async (email: string, password: string) => {
         try {
-            const userValidated = userValidationSchema.safeParse({ email, password });
+            const userValidated = userLoginSchema.safeParse({ email, password });
             
             if (!userValidated.success) {
                 return userValidated.error;
@@ -57,12 +57,21 @@ const AuthService = {
             //create token
             const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, { expiresIn: 300 });
             const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, { expiresIn: "7d" });
-
+            
             const userId = user.id;
 
             await AuthRepository.createAuth(userId, refreshToken);
 
             return { userId, accessToken, refreshToken };
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    userLogout: async (refreshToken: string) => {
+        // console.log(refreshToken)
+        try {
+            await AuthRepository.deleteAuth(refreshToken);
         } catch (error) {
             console.log(error);
         }

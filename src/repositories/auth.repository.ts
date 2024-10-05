@@ -15,7 +15,6 @@ const AuthRepository = {
     getAuth: async (refreshToken: string) => {
         try {
             const auth = await Auth.findOne({ refreshToken });
-            console.log('auth repo: ', auth);
             return auth;
         } catch (error) {
             console.log(error);
