@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { ZodError } from "zod";
 import AuthService from "../services/auth.service";
 import ResponseHandler from "../utils/response-handler/response.handler";
@@ -60,19 +60,17 @@ const AuthController = {
         }
     },
 
-    handleLogout : async (req: Request, res: Response, next: NextFunction) => {
-        const { refreshToken } = req.cookies;
-
+    handleLogout : async (req: Request, res: Response) => {
         try {
+            const { refreshToken } = req.cookies;
+
             await AuthService.userLogout(refreshToken);
 
-            return res
-                .clearCookie("accessToken")
-                .clearCookie("refreshToken")
-                .status(200)
-                .json({ message: "User logged out" });
+            return ResponseHandler(res, 200, "User logged out", null, null);
         } catch (error) {
-            next(error);
+            if (error instanceof Error) {
+                return ResponseHandler(res, 400, "Invalid validation", error, null);
+            }
         }
     }
 }
