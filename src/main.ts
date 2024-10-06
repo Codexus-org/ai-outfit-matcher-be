@@ -14,13 +14,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.post('/outfitmatcher', async (req, res) => {
-//     const { outfit } = req.body;
+    const { outfit } = req.body;
 
-//     //?fetching API
-//     const result = await getOutfit(outfit);
+    //?fetching API
+    const result = await getOutfit(outfit);
 
-//     return res.json({ result });
-// });
+    return res.json({ result });
+});
 
 app.get('/', (req, res) => {
     return res.send('Hello World!');
