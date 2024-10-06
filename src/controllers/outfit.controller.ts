@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { getOutfit } from '../services/get-outfit';
 import { Outfit } from '../models/outfit.schema';
+import jwt from 'jsonwebtoken';
 
 const OutfitController = {
     handleGetAllOutfit: async (req: Request, res: Response) => {
@@ -14,6 +15,22 @@ const OutfitController = {
 
     handleCreateOutfit: async (req: Request, res: Response) => {
         try {
+            const { accessToken } = req.cookies;
+
+            // Cek apakah accessToken ada
+            if (!accessToken) {
+                return res.status(401).json({ message: 'Unauthorized: You must be logged in to create an outfit' });
+            }
+
+            // Verifikasi accessToken
+            const payload = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET as string) as {
+                id: string;
+                firstName: string;
+                lastName: string;
+                username: string;
+                email: string;
+            };
+
             const { outfit } = req.body;
 
             // Generate outfit using AI
@@ -27,6 +44,11 @@ const OutfitController = {
 
             return res.status(201).json({ message: 'Outfit berhasil dibuat', data: newOutfit });
         } catch (error) {
+            if (error instanceof jwt.JsonWebTokenError) {
+                // Jika token tidak valid
+                return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+            }
+            // Jika terjadi error lain
             return res.status(500).json({ message: 'Gagal membuat outfit', error });
         }
     },
