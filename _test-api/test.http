@@ -16,11 +16,12 @@ Content-Type: application/json
 
 {
     "email": "asep@gmail.com",
-    "password": "asep12345_"
+    "password": "Asep12345!"
 }
 
 ### Logout User
 POST http://localhost:8000/outfitmatcher/api/v1/logout
+
 
 ### Outfit
 POST http://localhost:8000/outfitmatcher/
@@ -29,3 +30,19 @@ Content-Type: application/json
 {
     "outfit": "generate image of a men's outfit suitable for going to campus in rainy weather"
 }
+=======
+### Update User
+PATCH http://localhost:8000/outfitmatcher/api/v1/update
+Content-Type: application/json
+
+{
+    "firstName": "Asep",
+    "lastName": "Sunarya",
+    "username": "asep988",
+    "email": "asep@gmail.com",
+    "password": "Asep12345!"
+}
+
+### Delete User
+DELETE http://localhost:8000/outfitmatcher/api/v1/delete/6700817ad357410dd5d94d33
+

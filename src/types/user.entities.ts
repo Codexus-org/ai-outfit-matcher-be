@@ -20,6 +20,22 @@ export interface IResponseUserLogin {
     accessToken: string;
 }
 
+export interface IResponseUserLogout {
+    refreshToken: string;
+}
+
+export interface IResponseUserUpdate {
+    userId: string;
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+}
+
+export interface IResposeUserDelete {
+    userId: string;
+}
+
 export interface ServiceReturn<T> {
     error : Error | null;
     data: T | null;
