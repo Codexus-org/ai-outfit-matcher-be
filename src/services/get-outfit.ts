@@ -47,7 +47,7 @@ export async function getOutfit(outfit: string) {
     });
 
     const output = JSON.parse(response.choices[0].message.content as string);
-    console.log(output);
+    // console.log(output);
 
     const imageOutput = (await replicate.run('bytedance/sdxl-lightning-4step:5599ed30703defd1d160a25a63321b4dec97101d98b4674bcc56e41f62f35637', {
         input: {
@@ -64,7 +64,16 @@ export async function getOutfit(outfit: string) {
 
     const imageOutfit = imageOutput[0];
 
-    console.log(imageOutput);
+    // console.log(imageOutput);
 
-    return { output, imageOutfit };
+    // return { output, imageOutfit };
+    return {
+        weatherCategory: output.weatherCategory,
+        occasionCategory: output.occasionCategory,
+        clothes: output.clothes,
+        pants: output.pants,
+        shoe: output.shoe,
+        description: output.description,
+        imageOutfit,
+    };
 }

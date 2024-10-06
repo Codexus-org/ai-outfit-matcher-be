@@ -1,0 +1,12 @@
+POST http://localhost:8000/outfitmatcher/api/v1/outfit
+Content-Type: application/json
+
+{
+    "outfit": "generate image of a casual outfit suitable for going to campus in rainy weather"
+}
+
+### GET Outfit
+GET http://localhost:8000/outfitmatcher/api/v1/outfit
+
+### DELETE Outfit
+DELETE http://localhost:8000/outfitmatcher/api/v1/outfit/670296c204fb53ca0be57f7f
