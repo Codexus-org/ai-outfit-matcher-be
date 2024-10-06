@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/main.ts",
+    "dev": "bun run --watch src/main.ts",
     "lint": "eslint . --fix",
     "prepare": "husky"
   },
@@ -12,9 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "arctic": "^1.9.2",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "bun": "^1.1.29",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
     "express": "^4.17.1",
