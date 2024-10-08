@@ -1,5 +1,5 @@
 import { User } from "../models/user.schema";
-import { IUser } from "../types/user.entities";
+import { IUser, IUserWithGoogle } from "../types/user.entities";
 
 const UserRepository = {
     createUser: async (user: IUser) => {
@@ -37,6 +37,15 @@ const UserRepository = {
         } catch (error) {
             console.log(error);
         }
+    },
+    createUserWithGoogle: async (userData: IUserWithGoogle) => {
+        try{
+          const newUser = new User(userData);
+          const savedUser = await newUser.save();
+          return savedUser
+        } catch (error) {
+        console.log(error)
+      }
     }
 }
 

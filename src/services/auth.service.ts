@@ -1,5 +1,5 @@
 import { userLoginSchema, userValidationSchema } from "../utils/zod/zod"
-import { IResponseUserLogout,IResponseUserLogin, IResponseUserRegister, IUser, ServiceReturn } from "../types/user.entities";
+import { IResponseUserLogout,IResponseUserLogin, IResponseUserRegister, IUser, ServiceReturn, IUserWithGoogle } from "../types/user.entities";
 import UserService from "./user.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -86,7 +86,16 @@ const AuthService = {
         } catch {
             return { error: new Error("Internal server error"), data: null };
         }
-    }
+    },
+
+    userRegisterWithGoogle: async (user: IUserWithGoogle) => {
+      try {
+        const newUser = await UserService.createUserWithGoogle(user);
+        return newUser;
+      } catch {
+        return { error: new Error("Internal server error"), data: null };
+      }
+    } 
 }
 
 export default AuthService;

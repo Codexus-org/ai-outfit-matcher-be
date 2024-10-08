@@ -45,3 +45,7 @@ export interface ServiceReturn<T> {
     data: T | null;
 }
 
+export interface IUserWithGoogle {
+  username: string;
+  email: string;
+}
