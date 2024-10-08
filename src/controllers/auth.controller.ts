@@ -67,6 +67,7 @@ const AuthController = {
             await AuthService.userLogout(refreshToken);
             res.clearCookie('accessToken');
             res.clearCookie('refreshToken');
+            res.clearCookie('token');
             return ResponseHandler(res, 200, 'User logged out', null, null);
         } catch (error) {
             if (error instanceof Error) {
@@ -74,6 +75,19 @@ const AuthController = {
             }
         }
     },
+
+    handleRegisterWithGoogle: async (req: Request, res: Response) => {
+        try {
+            const { username, email } = req.body;
+            const newUser = await AuthService.userRegisterWithGoogle({username, email});
+
+            return ResponseHandler(res, 200, 'User created', null, newUser);
+        } catch (error) {
+            if (error instanceof Error) {
+                return ResponseHandler(res, 400, 'Invalid validation', error, null);
+            }
+        }
+    }
 };
 
 export default AuthController;

@@ -1,6 +1,6 @@
 import UserRepository from "../repositories/user.repository";
 import bcrypt from "bcrypt";
-import { IResposeUserDelete, IResponseUserUpdate, IUser, ServiceReturn } from "../types/user.entities";
+import { IResposeUserDelete, IResponseUserUpdate, IUser, ServiceReturn, IUserWithGoogle } from "../types/user.entities";
 
 const UserService = {
     createUser: async (user: IUser) => {
@@ -47,6 +47,15 @@ const UserService = {
         try {
             const deletedUser = await UserRepository.deleteUser(id);
             return { error: null, data: { userId: deletedUser?.id as string } };
+        } catch {
+            return { error: new Error("Internal server error"), data: null };
+        }
+    },
+
+    createUserWithGoogle: async (user: IUserWithGoogle) => {
+        try {
+            const newUser = await UserRepository.createUserWithGoogle(user);
+            return newUser;
         } catch {
             return { error: new Error("Internal server error"), data: null };
         }

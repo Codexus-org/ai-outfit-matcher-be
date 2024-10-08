@@ -7,7 +7,6 @@ import { google } from '../utils/oauth-config/arctic';
 import UserService from '../services/user.service';
 import AuthService from '../services/auth.service';
 import jwt from "jsonwebtoken";
-import { IUser } from '../types/user.entities';
 import AuthRepository from '../repositories/auth.repository';
 
 export const userRouter = express.Router();
@@ -52,28 +51,32 @@ userRouter.get("/login/google/callback", async (req, res) => {
     });
 
     const user = await response.json();
+    const userInfo = {
+      username: user.name,
+      email: user.email,
+    }
 
-    return res.json({user})
+    // return res.json({userInfo});
     // // Login strategy
 
     // // Check user if exist
     const findUser = await UserService.getUserByEmail(user.email);
 
     if (!findUser) {
-        const newUser = await AuthService.userRegister(user as IUser);
-
+        const newUser = await AuthService.userRegisterWithGoogle(userInfo);
+        
         // Generate Session ID
         const payload = {
-                id: newUser?.data?.userId as string,
-                username: newUser?.data?.username as string,
-                email: newUser?.data?.email as string
+          id: newUser?.id as string,
+          username: newUser?.username as string,
+          email: newUser?.email as string
         };
 
         //create token
         const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, { expiresIn: 300 });
         const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, { expiresIn: "7d" });
         
-        const userId = user.id;
+        const userId = newUser?.id as string;
 
         await AuthRepository.createAuth(userId, refreshToken);
 
@@ -95,7 +98,7 @@ userRouter.get("/login/google/callback", async (req, res) => {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, { expiresIn: 300 });
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, { expiresIn: "7d" });
 
-    const userId = user.id;
+    const userId = findUser?.id;
 
     await AuthRepository.createAuth(userId, refreshToken);
 
