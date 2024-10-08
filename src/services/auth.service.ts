@@ -59,8 +59,9 @@ const AuthService = {
             }
 
             const payload = {
-                id: user.id,
-                email: user.email
+              id: user.id as string,
+              email: user.email as string,
+              username: user.username as string
             };
 
             //create token
@@ -71,7 +72,7 @@ const AuthService = {
 
             await AuthRepository.createAuth(userId, refreshToken);
 
-            return { error: null, data: { userId, accessToken, refreshToken } };
+            return { error: null, data: { payload, accessToken, refreshToken } };
         } catch {
             return { error: new Error("Internal server error"), data: null };
         }

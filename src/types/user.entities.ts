@@ -15,7 +15,11 @@ export interface IResponseUserRegister {
 }
 
 export interface IResponseUserLogin {
-    userId: string;
+    payload: {
+      id: string;
+      email: string;
+      username: string;
+    };
     refreshToken: string;
     accessToken: string;
 }
