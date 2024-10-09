@@ -33,6 +33,8 @@ const OutfitController = {
 
             const { outfit } = req.body;
 
+            console.log(outfit)
+
             // Generate outfit using AI
             const generatedOutfit = await getOutfit(outfit);
 
