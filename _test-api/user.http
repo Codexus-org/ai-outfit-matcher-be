@@ -3,11 +3,11 @@ POST http://localhost:8000/outfitmatcher/api/v1/register
 Content-Type: application/json
 
 {
-    "firstName": "Faqih",
-    "lastName": "Nur Fahmi",
-    "username": "faqih1993",
-    "email": "faqih@gmail.com",
-    "password": "faqih123456!"
+    "firstName": "Putra",
+    "lastName": "Siregar",
+    "username": "putra3345",
+    "email": "psiregar@gmail.com",
+    "password": "psiregar12345_"
 }
 
 ### Login User
@@ -15,15 +15,22 @@ POST http://localhost:8000/outfitmatcher/api/v1/login
 Content-Type: application/json
 
 {
-    "email": "faqih@gmail.com",
-    "password": "faqih123456!"
+    "email": "psiregar@gmail.com",
+    "password": "psiregar12345_"
 }
 
 ### Logout User
 POST http://localhost:8000/outfitmatcher/api/v1/logout
 
 
-=======
+### Outfit
+POST http://localhost:8000/outfitmatcher/
+Content-Type: application/json
+
+{
+    "outfit": "generate image of a men's outfit suitable for going to campus in rainy weather"
+}
+
 ### Update User
 PATCH http://localhost:8000/outfitmatcher/api/v1/update
 Content-Type: application/json
