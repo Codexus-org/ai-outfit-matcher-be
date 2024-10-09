@@ -1,9 +1,19 @@
+### Create Outfit
 POST http://localhost:8000/outfitmatcher/api/v1/outfit
 Content-Type: application/json
 
 {
-    "outfit": "generate image of a casual outfit suitable for going to campus in rainy weather"
+    "outfit": "generate image of a muslim  outfit suitable for going to mosque in rainy weather"
 }
+
+### Save Outfit
+POST http://localhost:8000/outfitmatcher/api/v1/outfit/save
+Content-Type: application/json
+
+{
+  "outfitId": "6705cf73a3f458a06cd61eb0"
+}
+
 
 ### GET Outfit
 GET http://localhost:8000/outfitmatcher/api/v1/outfit

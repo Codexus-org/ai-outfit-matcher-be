@@ -3,11 +3,11 @@ POST http://localhost:8000/outfitmatcher/api/v1/register
 Content-Type: application/json
 
 {
-    "firstName": "Asep",
-    "lastName": "Sunarya",
-    "username": "asep988",
-    "email": "john@gmail.com",
-    "password": "John123456!"
+    "firstName": "Faqih",
+    "lastName": "Nur Fahmi",
+    "username": "faqih1993",
+    "email": "faqih@gmail.com",
+    "password": "faqih123456!"
 }
 
 ### Login User
@@ -15,8 +15,8 @@ POST http://localhost:8000/outfitmatcher/api/v1/login
 Content-Type: application/json
 
 {
-    "email": "andi@me.com",
-    "password": "12345678"
+    "email": "faqih@gmail.com",
+    "password": "faqih123456!"
 }
 
 ### Logout User
