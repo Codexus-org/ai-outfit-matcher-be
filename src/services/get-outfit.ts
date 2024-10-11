@@ -1,3 +1,4 @@
+import OutfitRepository from '../repositories/outfit.repository';
 import { openai } from '../utils/openai/openai';
 import { replicate } from '../utils/replicate/replicate';
 
@@ -76,4 +77,9 @@ export async function getOutfit(outfit: string) {
         description: output.description,
         imageOutfit,
     };
+}
+
+export async function getOutfitUser(id: string) {
+  const outfits = await OutfitRepository.getByUserId(id);
+  return outfits;
 }

@@ -8,3 +8,5 @@ outfitRouter.post('/', authMiddleware, OutfitController.handleCreateOutfit);
 outfitRouter.get('/', authMiddleware, OutfitController.handleGetAllOutfit);
 outfitRouter.delete('/:id', authMiddleware, OutfitController.handleDeleteOutfit);
 outfitRouter.post('/save', authMiddleware, OutfitController.handleSaveOutfit);
+
+outfitRouter.get('/collections', authMiddleware, OutfitController.handleGetOutfitByUserId);

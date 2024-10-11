@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getOutfit } from '../services/get-outfit';
+import { getOutfit, getOutfitUser } from '../services/get-outfit';
 import { Outfit } from '../models/outfit.schema';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
@@ -113,6 +113,26 @@ const OutfitController = {
             return res.status(500).json({ message: 'Gagal menghapus outfit', error });
         }
     },
+
+    handleGetOutfitByUserId: async (req: Request, res: Response) => {
+        try {
+          const {accessToken} = req.cookies;
+
+          const payload = jwt.decode(accessToken) as { 
+            id: string, 
+            firstName: string, 
+            lastName: string, 
+            username: string, 
+            email: string 
+          }
+
+          const outfit = await getOutfitUser(payload.id);
+
+          return res.status(200).json({ message: 'Success get outfit by user', data: outfit });
+        } catch (error) {
+          return res.status(500).json({ message: 'Failed get outfit by user', error });          
+        }
+    }
 };
 
 export default OutfitController;
