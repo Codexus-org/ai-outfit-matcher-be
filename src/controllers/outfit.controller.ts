@@ -4,6 +4,7 @@ import { Outfit } from '../models/outfit.schema';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import { OutfitUser } from '../models/outfitUser.schema';
+import { string } from 'zod';
 
 const OutfitController = {
     handleGetAllOutfit: async (req: Request, res: Response) => {
@@ -82,6 +83,14 @@ const OutfitController = {
                 return res.status(404).json({ message: 'Outfit not found' });
             }
 
+            // Convert the image response to a Blob
+            const imageResponse = await fetch(outfit.imageOutfit as string); 
+
+            const imageBuffer = await imageResponse.arrayBuffer();
+
+            // Compress data imageBuffer and convert to base64
+            const imageBase64 = Buffer.from(imageBuffer).toString('base64');
+
             // Buat instance OutfitUser dengan data yang diperlukan
             const outfitUser = new OutfitUser({
                 user_id: payload.id, // ID user dari token
@@ -92,14 +101,15 @@ const OutfitController = {
                 pants: outfit.pants, // Ambil dari outfit
                 shoe: outfit.shoe, // Ambil dari outfit
                 description: outfit.description, // Ambil dari outfit
-                imageOutfit: outfit.imageOutfit, // Ambil dari outfit
+                imageOutfit: imageBase64, // Ambil dari outfit
             });
 
             // Simpan outfitUser ke database
             await outfitUser.save();
-
+            
             return res.status(201).json({ message: 'Outfit berhasil disimpan', data: outfitUser });
         } catch (error) {
+            console.error('Error saving outfit:', error);
             return res.status(500).json({ message: 'Gagal menyimpan outfit', error });
         }
     },
