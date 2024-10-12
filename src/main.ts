@@ -12,12 +12,12 @@ dotenv.config();
 const app = express();
 dbConnect();
 
-// app.use(
-//   cors({
-//      origin: "http://localhost:5173",
-//      credentials: true,
-//   }),
-// );
+app.use(
+  cors({
+     origin: "http://103.217.145.247/:5173",
+     credentials: true,
+  }),
+);
 
 app.use(express.json());
 app.use(cookieParser());
@@ -31,9 +31,6 @@ app.post('/outfitmatcher', async (req, res) => {
     return res.json({ result });
 });
 
-app.get('/', (req, res) => {
-    return res.send('Hello World!');
-});
 
 app.use('/outfitmatcher/api/v1/', userRouter);
 app.use('/outfitmatcher/api/v1/outfit', outfitRouter);

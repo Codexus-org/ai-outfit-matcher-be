@@ -1,7 +1,7 @@
 import { userLoginSchema, userValidationSchema } from "../utils/zod/zod"
 import { IResponseUserLogout,IResponseUserLogin, IResponseUserRegister, IUser, ServiceReturn, IUserWithGoogle } from "../types/user.entities";
 import UserService from "./user.service";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import AuthRepository from "../repositories/auth.repository";
 

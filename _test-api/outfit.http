@@ -11,8 +11,8 @@ POST http://localhost:8000/outfitmatcher/api/v1/outfit/save
 Content-Type: application/json
 
 {
-  "outfitId": "6705cf73a3f458a06cd61eb0"
-}
+  "outfitId": "670a06defa8e2ff94ff624b4"
+} 
 
 
 ### GET Outfit

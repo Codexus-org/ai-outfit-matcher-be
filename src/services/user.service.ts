@@ -1,5 +1,5 @@
 import UserRepository from "../repositories/user.repository";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { IResposeUserDelete, IResponseUserUpdate, IUser, ServiceReturn, IUserWithGoogle } from "../types/user.entities";
 
 const UserService = {
