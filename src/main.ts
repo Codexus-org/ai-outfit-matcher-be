@@ -13,10 +13,10 @@ const app = express();
 dbConnect();
 
 app.use(
-  cors({
-     origin: "http://103.217.145.247/:5173",
-     credentials: true,
-  }),
+    cors({
+        origin: true,
+        credentials: true,
+    })
 );
 
 app.use(express.json());
@@ -30,7 +30,6 @@ app.post('/outfitmatcher', async (req, res) => {
 
     return res.json({ result });
 });
-
 
 app.use('/outfitmatcher/api/v1/', userRouter);
 app.use('/outfitmatcher/api/v1/outfit', outfitRouter);
