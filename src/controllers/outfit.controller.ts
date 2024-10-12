@@ -44,6 +44,8 @@ const OutfitController = {
             // Ambil userId, username dari local storage browser
             const userId = localStorage.getItem('userId');
             const username = localStorage.getItem('username');
+
+            console.log(userId, username);
             // Cari outfit berdasarkan outfitId
             const outfit = await Outfit.findById(outfitId);
             if (!outfit) {
