@@ -10,5 +10,5 @@ outfitRouter.delete('/:id', authMiddleware, OutfitController.handleDeleteOutfit)
 outfitRouter.post('/save', authMiddleware, OutfitController.handleSaveOutfit);
 
 // collections
-outfitRouter.get('/collections', authMiddleware, OutfitController.handleGetOutfitByUserId);
+outfitRouter.get('/collections/:userid', authMiddleware, OutfitController.handleGetOutfitByUserId);
 outfitRouter.delete('/collections/:id', authMiddleware, OutfitController.handleDeleteOutfitByUserId);

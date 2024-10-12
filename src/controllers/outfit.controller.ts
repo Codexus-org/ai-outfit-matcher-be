@@ -18,8 +18,6 @@ const OutfitController = {
         try {
             const { outfit } = req.body;
 
-            console.log(outfit);
-
             // Generate outfit using AI
             const generatedOutfit = await getOutfit(outfit);
 
@@ -42,22 +40,7 @@ const OutfitController = {
 
     handleSaveOutfit: async (req: Request, res: Response) => {
         try {
-            const { outfitId } = req.body; // Ambil outfitId dari body request
-            const { accessToken } = req.cookies; // Ambil accessToken dari cookie
-
-            // Cek apakah accessToken ada
-            if (!accessToken) {
-                return res.status(401).json({ message: 'Unauthorized: You must be logged in to save an outfit' });
-            }
-
-            // Verifikasi accessToken untuk mendapatkan user info
-            const payload = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET as string) as {
-                id: string;
-                firstName: string;
-                lastName: string;
-                username: string;
-                email: string;
-            };
+            const { outfitId, userId, username } = req.body;
 
             // Cari outfit berdasarkan outfitId
             const outfit = await Outfit.findById(outfitId);
@@ -67,8 +50,8 @@ const OutfitController = {
 
             // Buat instance OutfitUser dengan data yang diperlukan
             const outfitUser = new OutfitUser({
-                user_id: payload.id, // ID user dari token
-                name: payload.username ? `${payload.username}` : 'User', // Menangani kasus jika nama tidak ada // Nama user
+                user_id: userId, // ID user dari token
+                name: username || 'User', // Menangani kasus jika nama tidak ada // Nama user
                 weatherCategory: outfit.weatherCategory, // Ambil dari outfit
                 occasionCategory: outfit.occasionCategory, // Ambil dari outfit
                 clothes: outfit.clothes, // Ambil dari outfit
@@ -99,17 +82,9 @@ const OutfitController = {
 
     handleGetOutfitByUserId: async (req: Request, res: Response) => {
         try {
-            const { accessToken } = req.cookies;
+            const { userid } = req.params;
 
-            const payload = jwt.decode(accessToken) as {
-                id: string;
-                firstName: string;
-                lastName: string;
-                username: string;
-                email: string;
-            };
-
-            const outfit = await getOutfitUser(payload.id);
+            const outfit = await getOutfitUser(userid);
 
             return res.status(200).json({ message: 'Success get outfit by user', data: outfit });
         } catch (error) {
