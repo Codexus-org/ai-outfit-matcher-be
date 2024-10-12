@@ -17,6 +17,11 @@ const OutfitRepository = {
       const outfits = await OutfitUser.find({ user_id });
 
       return outfits;
+    },
+
+    deleteOutfitByUserId: async (id: string) => {
+      const outftId = id;
+      await OutfitUser.findByIdAndDelete(outftId)
     }
 };
 

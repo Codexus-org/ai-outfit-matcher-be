@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getOutfit, getOutfitUser } from '../services/get-outfit';
+import { deleteOutfitByUserId, getOutfit, getOutfitUser } from '../services/get-outfit';
 import { Outfit } from '../models/outfit.schema';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
@@ -132,6 +132,16 @@ const OutfitController = {
         } catch (error) {
           return res.status(500).json({ message: 'Failed get outfit by user', error });          
         }
+    },
+
+    handleDeleteOutfitByUserId: async (req: Request, res: Response) => {
+      try {
+        const id = req.params.id;
+        await deleteOutfitByUserId(id)
+        return res.status(200).json({message: "success delete outfit"});
+      } catch (error) {
+        return res.status(500).json({ message: 'Failed delete outfit by user', error });          
+      }
     }
 };
 

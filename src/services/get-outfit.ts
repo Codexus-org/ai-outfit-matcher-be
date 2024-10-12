@@ -83,3 +83,7 @@ export async function getOutfitUser(id: string) {
   const outfits = await OutfitRepository.getByUserId(id);
   return outfits;
 }
+
+export async function deleteOutfitByUserId(id: string){
+  await OutfitRepository.deleteOutfitByUserId(id)
+}
