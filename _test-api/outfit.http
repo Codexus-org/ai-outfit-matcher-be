@@ -19,4 +19,12 @@ Content-Type: application/json
 GET http://localhost:8000/outfitmatcher/api/v1/outfit
 
 ### DELETE Outfit
-DELETE http://localhost:8000/outfitmatcher/api/v1/outfit/670292f804fb53ca0be57f7d
+DELETE http://localhost:8000/outfitmatcher/api/v1/outfit/6706c9635654e491a202f27b
+
+### Cpllections
+
+### GET outfit by user
+GET http://localhost:8000/outfitmatcher/api/v1/outfit/collections
+
+### DELETE outfit by user
+DELETE http://localhost:8000/outfitmatcher/api/v1/outfit/collections/6706c9635654e491a202f27b
