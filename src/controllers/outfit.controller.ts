@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { deleteOutfitByUserId, getOutfit, getOutfitUser } from '../services/get-outfit';
 import { Outfit } from '../models/outfit.schema';
 import jwt from 'jsonwebtoken';
-import mongoose from 'mongoose';
 import { OutfitUser } from '../models/outfitUser.schema';
 
 const OutfitController = {
@@ -17,25 +16,9 @@ const OutfitController = {
 
     handleCreateOutfit: async (req: Request, res: Response) => {
         try {
-            const { accessToken } = req.cookies;
-
-            // Cek apakah accessToken ada
-            if (!accessToken) {
-                return res.status(401).json({ message: 'Unauthorized: You must be logged in to create an outfit' });
-            }
-
-            // Verifikasi accessToken
-            const payload = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET as string) as {
-                id: string;
-                firstName: string;
-                lastName: string;
-                username: string;
-                email: string;
-            };
-
             const { outfit } = req.body;
 
-            console.log(outfit)
+            console.log(outfit);
 
             // Generate outfit using AI
             const generatedOutfit = await getOutfit(outfit);
@@ -116,33 +99,33 @@ const OutfitController = {
 
     handleGetOutfitByUserId: async (req: Request, res: Response) => {
         try {
-          const {accessToken} = req.cookies;
+            const { accessToken } = req.cookies;
 
-          const payload = jwt.decode(accessToken) as { 
-            id: string, 
-            firstName: string, 
-            lastName: string, 
-            username: string, 
-            email: string 
-          }
+            const payload = jwt.decode(accessToken) as {
+                id: string;
+                firstName: string;
+                lastName: string;
+                username: string;
+                email: string;
+            };
 
-          const outfit = await getOutfitUser(payload.id);
+            const outfit = await getOutfitUser(payload.id);
 
-          return res.status(200).json({ message: 'Success get outfit by user', data: outfit });
+            return res.status(200).json({ message: 'Success get outfit by user', data: outfit });
         } catch (error) {
-          return res.status(500).json({ message: 'Failed get outfit by user', error });          
+            return res.status(500).json({ message: 'Failed get outfit by user', error });
         }
     },
 
     handleDeleteOutfitByUserId: async (req: Request, res: Response) => {
-      try {
-        const id = req.params.id;
-        await deleteOutfitByUserId(id)
-        return res.status(200).json({message: "success delete outfit"});
-      } catch (error) {
-        return res.status(500).json({ message: 'Failed delete outfit by user', error });          
-      }
-    }
+        try {
+            const id = req.params.id;
+            await deleteOutfitByUserId(id);
+            return res.status(200).json({ message: 'success delete outfit' });
+        } catch (error) {
+            return res.status(500).json({ message: 'Failed delete outfit by user', error });
+        }
+    },
 };
 
 export default OutfitController;

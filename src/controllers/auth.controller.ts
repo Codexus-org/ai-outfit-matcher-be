@@ -37,13 +37,12 @@ const AuthController = {
                 return ResponseHandler(res, 400, userLogin.error.message, null, null);
             }
 
+            console.log(userLogin.data);
+
             return ResponseHandler(res, 200, 'User logged in', null, userLogin.data, [
                 {
                     name: 'accessToken',
                     value: userLogin.data?.accessToken,
-                    options: {
-                        httpOnly: true,
-                    },
                 },
                 {
                     name: 'refreshToken',
@@ -79,7 +78,7 @@ const AuthController = {
     handleRegisterWithGoogle: async (req: Request, res: Response) => {
         try {
             const { username, email } = req.body;
-            const newUser = await AuthService.userRegisterWithGoogle({username, email});
+            const newUser = await AuthService.userRegisterWithGoogle({ username, email });
 
             return ResponseHandler(res, 200, 'User created', null, newUser);
         } catch (error) {
@@ -87,7 +86,7 @@ const AuthController = {
                 return ResponseHandler(res, 400, 'Invalid validation', error, null);
             }
         }
-    }
+    },
 };
 
 export default AuthController;

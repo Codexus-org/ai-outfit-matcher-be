@@ -4,6 +4,7 @@ import { Auth } from '../models/auth.schema';
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const { accessToken, refreshToken } = req.cookies;
+    console.log('Cookies :', req.cookies);
 
     if (!accessToken && !refreshToken) {
         return res.status(401).json({ message: 'Unauthorized' });
@@ -12,7 +13,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
     if (accessToken) {
         try {
             jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET as string);
-        } catch (error) {
+        } catch (_error) {
             if (!refreshToken) {
                 return res.status(401).json({ message: 'Unauthorized' });
             }
@@ -32,7 +33,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
                 });
 
                 return res.cookie('accessToken', newAccessToken, { httpOnly: true }).status(200).json({ message: 'User logged in' });
-            } catch (error) {
+            } catch (_error) {
                 return res.status(401).json({ message: 'Unauthorized' });
             }
         }
