@@ -13,8 +13,8 @@ const OutfitRepository = {
     },
 
     getByUserId: async (id: string) => {
-      const user_id = id;
-      const outfits = await OutfitUser.find({ user_id });
+      // const user_id = id;
+      const outfits = await OutfitUser.find({ user_id: id });
 
       return outfits;
     },

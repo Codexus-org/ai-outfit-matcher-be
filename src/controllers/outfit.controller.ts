@@ -40,12 +40,8 @@ const OutfitController = {
 
     handleSaveOutfit: async (req: Request, res: Response) => {
         try {
-            const { outfitId } = req.body;
-            // Ambil userId, username dari local storage browser
-            const userId = localStorage.getItem('userId');
-            const username = localStorage.getItem('username');
-
-            console.log(userId, username);
+            const { outfitId, userId, username } = req.body;
+            
             // Cari outfit berdasarkan outfitId
             const outfit = await Outfit.findById(outfitId);
             if (!outfit) {
