@@ -37,15 +37,12 @@ const AuthController = {
                 return ResponseHandler(res, 400, userLogin.error.message, null, null);
             }
 
-            console.log(userLogin.data);
-
             return ResponseHandler(res, 200, 'User logged in', null, userLogin.data, [
                 {
                     name: 'accessToken',
                     value: userLogin.data?.accessToken,
                     options: {
                         sameSite: 'none',
-                        secure: true,
                     },
                 },
                 {
@@ -54,7 +51,6 @@ const AuthController = {
                     options: {
                         httpOnly: true,
                         sameSite: 'none',
-                        secure: true,
                     },
                 },
             ]);
