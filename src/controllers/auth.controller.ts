@@ -43,12 +43,18 @@ const AuthController = {
                 {
                     name: 'accessToken',
                     value: userLogin.data?.accessToken,
+                    options: {
+                        sameSite: 'none',
+                        secure: true,
+                    },
                 },
                 {
                     name: 'refreshToken',
                     value: userLogin.data?.refreshToken,
                     options: {
                         httpOnly: true,
+                        sameSite: 'none',
+                        secure: true,
                     },
                 },
             ]);
